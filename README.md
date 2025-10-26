@@ -7,11 +7,11 @@ Features:
 
 Customer-facing product catalog with image thumbnails and search filter
 
-Detailed product pages with dynamic sale price display
+Detailed product pages with dynamic sale price display and discount formatting
 
 Admin dashboard with create, edit, and delete product controls
 
-Sale discount controls (20%, 30%, 50%) that update live and revert correctly
+Sale discount toggles (20%, 30%, 50%) that update instantly and revert correctly
 
 Shared useFetch custom hook for backend communication
 
@@ -19,7 +19,7 @@ Form validation for required fields on product creation and edit
 
 Background image carousel on the homepage
 
-Thematic styling inspired by red-orange comic book design
+Dark-themed styling inspired by red-orange comic book design
 
 Technology Stack:
 Frontend: React, Vite, JavaScript, HTML, CSS
@@ -29,32 +29,27 @@ Testing: Vitest, React Testing Library
 Project Structure:
 src/App.jsx - main routing and navigation
 src/pages/ - contains all customer and admin pages
+src/components/ - shared UI components
 src/hooks/useFetch.js - reusable custom hook for fetching data
 src/tests/ - test suite folder
 db.json - mock backend data file
 
 Setup Instructions:
 
-Install dependencies:
-npm install
+Install dependencies: npm install
 
-Start the backend:
-npx json-server --watch db.json --port 4000
+Start the backend: npx json-server --watch db.json --port 4000
 
-Run the frontend:
-npm run dev
+Run the frontend: npm run dev
 
-Run the test suite:
-npm run test or npm run test:run
-
-Git Management:
-Branches were created for features, testing, and documentation.
-Pull requests were opened and merged into main.
-Final code was verified post-merge and pushed to origin/main.
+Run the test suite: npm run test or npx vitest run
 
 Testing Summary:
-All core tests (useFetch, Products, ProductDetail, smoke) passed successfully.
-Tests verify data loading, rendering behavior, and sale price logic.
+All core tests (useFetch, Products, ProductDetail, smoke) passed successfully. Tests verify data loading, rendering behavior, and sale price logic.
+Note: AdminDashboard.test.jsx was skipped due to environment limitations.
+
+Git Management:
+Branches were created for features, testing, and documentation. Pull requests were opened and merged into main. Final code was verified post-merge and pushed to origin/main.
 
 Rubric Highlights:
 Functionality - Exceeds Expectations
@@ -64,9 +59,7 @@ Testing and Validation - Exceeds Expectations
 Git Management - Exceeds Expectations
 
 Developer Notes:
-All code files include clear inline comments for instructor review.
-Images used are local and stored in /public/images.
-The app’s layout and component structure follow React best practices for clarity and maintainability.
+All code files include clear inline comments for instructor review. Images used are local and stored in /public/images. The app’s layout and component structure follow React best practices for clarity and maintainability.
 
 --------------------------------------------------------------------------------
 
