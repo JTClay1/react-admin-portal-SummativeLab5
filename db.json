@@ -1,0 +1,166 @@
+{
+  "store_info": [
+    {
+      "id": "1",
+      "name": "Joystick: PC Paradise",
+      "description": "Your one stop shop for top tier games at rock bottom prices!",
+      "phone_number": "480-555-4444"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Forza Horizon 5",
+      "genre": "Racing",
+      "platform": "PC",
+      "price": 59.99,
+      "quantity": 17,
+      "imageUrl": "/images/fh5.jpg",
+      "description": "Explore Mexico in stunning detail and race across diverse environments with hundreds of cars."
+    },
+    {
+      "id": "2",
+      "name": "The Last of Us",
+      "genre": "Action/Adventure",
+      "platform": "PC",
+      "price": 49.99,
+      "quantity": 12,
+      "imageUrl": "/images/tlou1.jpg",
+      "description": "Experience Joel and Ellie's harrowing journey through a post-apocalyptic world."
+    },
+    {
+      "id": "3",
+      "name": "The Last of Us Part II",
+      "genre": "Action/Adventure",
+      "platform": "PC",
+      "price": 69.99,
+      "quantity": 9,
+      "imageUrl": "/images/tlou2.jpg",
+      "description": "Ellie’s brutal and emotional quest for revenge in a world gone mad."
+    },
+    {
+      "id": "4",
+      "name": "Grand Theft Auto V",
+      "genre": "Open World/RPG",
+      "platform": "PC",
+      "price": 14.99,
+      "quantity": 24,
+      "imageUrl": "/images/gtav.jpg",
+      "description": "Switch between three criminals and pull off daring heists in Los Santos.",
+      "salePercent": 0.5
+    },
+    {
+      "id": "5",
+      "name": "Red Dead Redemption 2",
+      "genre": "Open World/RPG",
+      "platform": "PC",
+      "price": 39.99,
+      "quantity": 14,
+      "imageUrl": "/images/rdr2.jpg",
+      "description": "Arthur Morgan’s story of loyalty, survival, and freedom in the dying days of the Wild West."
+    },
+    {
+      "id": "6",
+      "name": "Elden Ring",
+      "genre": "Open World/RPG",
+      "platform": "PC",
+      "price": 59.99,
+      "quantity": 21,
+      "imageUrl": "/images/er.jpg",
+      "description": "FromSoftware’s vast open world of dark fantasy adventure filled with mystery and challenge."
+    },
+    {
+      "id": "7",
+      "name": "Battlefield 6",
+      "genre": "FPS",
+      "platform": "PC",
+      "price": 69.99,
+      "quantity": 8,
+      "imageUrl": "/images/bf6.jpg",
+      "description": "Massive battles and destructible environments in the next evolution of the Battlefield series."
+    },
+    {
+      "id": "8",
+      "name": "Cyberpunk 2077",
+      "genre": "Open World/RPG",
+      "platform": "PC",
+      "price": 49.99,
+      "quantity": 18,
+      "imageUrl": "/images/cyberpunk2077.jpg",
+      "description": "Open-world story of survival and power in Night City."
+    },
+    {
+      "id": "9",
+      "name": "Spider-Man Remastered",
+      "genre": "Action/Adventure",
+      "platform": "PC",
+      "price": 41.99,
+      "quantity": 27,
+      "imageUrl": "/images/spiderman.jpg",
+      "description": "Swing through Marvel’s New York as Spider-Man in this high-flying remaster.",
+      "salePercent": 0.3
+    },
+    {
+      "id": "10",
+      "name": "NBA 2K26",
+      "genre": "Sports",
+      "platform": "PC",
+      "price": 59.99,
+      "quantity": 15,
+      "imageUrl": "/images/2k26.jpg",
+      "description": "The latest in the NBA 2K franchise featuring new career and franchise modes."
+    },
+    {
+      "id": "11",
+      "name": "Madden NFL 26",
+      "genre": "Sports",
+      "platform": "PC",
+      "price": 59.99,
+      "quantity": 11,
+      "imageUrl": "/images/madden26.jpg",
+      "description": "Lead your favorite NFL team to victory with updated rosters and enhanced AI."
+    },
+    {
+      "id": "12",
+      "name": "EA Sports FC 26",
+      "genre": "Sports",
+      "platform": "PC",
+      "price": 47.99,
+      "quantity": 22,
+      "imageUrl": "/images/fc26.jpg",
+      "description": "Build your dream club and compete at the top level in EA’s re-imagined football experience.",
+      "salePercent": 0.2
+    },
+    {
+      "id": "13",
+      "name": "Call of Duty: Black Ops 7",
+      "genre": "FPS",
+      "platform": "PC",
+      "price": 69.99,
+      "quantity": 19,
+      "imageUrl": "/images/bo7.jpg",
+      "description": "The next generation of tactical FPS warfare in the acclaimed Black Ops series."
+    },
+    {
+      "id": "14",
+      "name": "Need for Speed Unbound",
+      "genre": "Racing",
+      "platform": "PC",
+      "price": 49.99,
+      "quantity": 13,
+      "imageUrl": "/images/nfs.jpg",
+      "description": "Rule the streets in high-stakes races with deep customization and street art style."
+    },
+    {
+      "id": "15",
+      "name": "The Crew Motorfest",
+      "genre": "Racing",
+      "platform": "PC",
+      "price": 59.99,
+      "quantity": 10,
+      "imageUrl": "/images/tcm.jpg",
+      "description": "Drive and explore the Hawaiian island of Oʻahu in a massive car festival experience."
+    }
+  ],
+  "reviews": []
+}
