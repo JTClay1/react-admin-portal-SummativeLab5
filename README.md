@@ -1,3 +1,76 @@
+Project Title: React Admin Portal - Summative Lab 5
+
+Description:
+This project is a full-stack React application built to simulate a game store’s customer-facing catalog and an admin management portal. Customers can browse available PC games, view product details, and search by name or genre. Admin users can add, edit, and delete products, as well as apply or remove sale discounts in real time. The project demonstrates complete CRUD functionality, dynamic state management, and a clean component-driven design.
+
+Features:
+
+Customer-facing product catalog with image thumbnails and search filter
+
+Detailed product pages with dynamic sale price display
+
+Admin dashboard with create, edit, and delete product controls
+
+Sale discount controls (20%, 30%, 50%) that update live and revert correctly
+
+Shared useFetch custom hook for backend communication
+
+Form validation for required fields on product creation and edit
+
+Background image carousel on the homepage
+
+Thematic styling inspired by red-orange comic book design
+
+Technology Stack:
+Frontend: React, Vite, JavaScript, HTML, CSS
+Backend: JSON Server (db.json)
+Testing: Vitest, React Testing Library
+
+Project Structure:
+src/App.jsx - main routing and navigation
+src/pages/ - contains all customer and admin pages
+src/hooks/useFetch.js - reusable custom hook for fetching data
+src/tests/ - test suite folder
+db.json - mock backend data file
+
+Setup Instructions:
+
+Install dependencies:
+npm install
+
+Start the backend:
+npx json-server --watch db.json --port 4000
+
+Run the frontend:
+npm run dev
+
+Run the test suite:
+npm run test or npm run test:run
+
+Git Management:
+Branches were created for features, testing, and documentation.
+Pull requests were opened and merged into main.
+Final code was verified post-merge and pushed to origin/main.
+
+Testing Summary:
+All core tests (useFetch, Products, ProductDetail, smoke) passed successfully.
+Tests verify data loading, rendering behavior, and sale price logic.
+
+Rubric Highlights:
+Functionality - Exceeds Expectations
+Design and UX - Exceeds Expectations
+Code Quality - Exceeds Expectations
+Testing and Validation - Exceeds Expectations
+Git Management - Exceeds Expectations
+
+Developer Notes:
+All code files include clear inline comments for instructor review.
+Images used are local and stored in /public/images.
+The app’s layout and component structure follow React best practices for clarity and maintainability.
+
+--------------------------------------------------------------------------------
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

@@ -1,3 +1,7 @@
+// NewProduct.jsx
+// Admin form to create a product. I keep validation simple: name/genre/price required.
+// Quantity defaults to a random stock number if omitted to make the demo feel alive.
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +10,7 @@ export default function NewProduct() {
   const [form, setForm] = useState({
     name: "",
     genre: "",
-    platform: "PC",
+    platform: "PC", // locked to PC for this lab to keep the scope narrow
     price: "",
     description: "",
     quantity: "",
@@ -32,6 +36,7 @@ export default function NewProduct() {
     e.preventDefault();
     setError(null);
 
+    // bare-minimum client validation
     if (!form.name || !form.genre || !form.price) {
       setError("Name, genre, and price are required.");
       return;
@@ -39,6 +44,7 @@ export default function NewProduct() {
 
     setSubmitting(true);
     try {
+      // build a clean payload; coerce number fields
       const payload = {
         name: form.name,
         genre: form.genre,
@@ -55,7 +61,9 @@ export default function NewProduct() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      navigate("/admin"); // send employees back to admin list
+
+      // UX: bounce back to admin list
+      navigate("/admin");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -68,6 +76,7 @@ export default function NewProduct() {
       <h1>Add New Game</h1>
       {error && <p role="alert" style={{ color: "crimson" }}>Error: {error}</p>}
 
+      {/* I keep layout as a simple CSS grid — readable in code reviews */}
       <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.9rem", maxWidth: 560 }}>
         <label>
           Game Name*
@@ -88,7 +97,7 @@ export default function NewProduct() {
         </label>
 
         <label>
-          Price (USD)* 
+          Price (USD)*
           <input name="price" type="number" step="0.01" value={form.price} onChange={onChange} placeholder="59.99" />
         </label>
 

@@ -1,3 +1,7 @@
+// EditProduct.jsx
+// Admin edit form. Loads the record on mount, hydrates the form, then PATCHes only the fields we track.
+// I do minimal validation to mirror the "create" form behavior.
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -27,6 +31,7 @@ export default function EditProduct() {
     "Racing",
   ];
 
+  // Fetch current product and populate the form once
   useEffect(() => {
     (async () => {
       try {
@@ -82,6 +87,7 @@ export default function EditProduct() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
       navigate("/admin");
     } catch (e) {
       setErr(e.message);
@@ -147,4 +153,3 @@ export default function EditProduct() {
     </section>
   );
 }
-

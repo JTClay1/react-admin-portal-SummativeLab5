@@ -1,15 +1,20 @@
+// ProductDetail.jsx
+// Dedicated detail page for a single product.
+// I re-compute the base MSRP if a salePercent exists so users see "was $X / now $Y".
+
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const placeholder = "https://via.placeholder.com/800x450.png?text=No+Image";
 
 export default function ProductDetail() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id } = useParams();          // dynamic route param
+  const navigate = useNavigate();      // quick back button
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
 
+  // Fetch on mount + whenever id changes
   useEffect(() => {
     (async () => {
       try {
@@ -29,15 +34,17 @@ export default function ProductDetail() {
   if (err) return <p role="alert">Error: {err}</p>;
   if (!game) return <p>Not found.</p>;
 
+  // Pricing math mirrors the list view for consistency.
   const sale = Number(game.salePercent || 0); // 0–1
   const hasSale = sale > 0 && sale < 1;
-  const current = Number(game.price || 0); // already discounted when sale active
+  const current = Number(game.price || 0);    // discounted if sale is active
   const base = hasSale ? current / (1 - sale) : current;
 
   return (
     <section style={{ display: "grid", gap: "0.75rem", maxWidth: 920 }}>
       <button onClick={() => navigate(-1)}>← Back</button>
 
+      {/* Big banner shot */}
       <div className="hero">
         <img
           src={game.imageUrl || placeholder}
@@ -51,6 +58,7 @@ export default function ProductDetail() {
 
       <h1 style={{ margin: 0 }}>{game.name}</h1>
 
+      {/* Compact price pill with sale styles */}
       {hasSale ? (
         <p
           style={{
@@ -88,6 +96,7 @@ export default function ProductDetail() {
         </p>
       )}
 
+      {/* Basic metadata (kept minimal for the lab) */}
       <p style={{ margin: 0 }}>
         <strong>Platform:</strong> {game.platform}
       </p>

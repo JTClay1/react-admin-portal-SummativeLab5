@@ -1,3 +1,7 @@
+// Products.jsx
+// Public catalog grid. Pulls products from json-server, supports a quick client-side filter,
+// and displays sale math (base vs discounted) without asking the server to do anything fancy.
+
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
@@ -5,10 +9,12 @@ import useFetch from "../hooks/useFetch";
 const placeholder = "https://via.placeholder.com/400x225.png?text=No+Image";
 
 export default function Products() {
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState(""); // lightweight client-side filter text
   const { data, loading, error } = useFetch("http://localhost:4000/products");
   const products = Array.isArray(data) ? data : [];
 
+  // Derived list respecting the search term.
+  // Note: small data set → cheap to filter on the client.
   const filtered = useMemo(() => {
     const term = q.trim().toLowerCase();
     if (!term) return products;
@@ -26,6 +32,7 @@ export default function Products() {
     <section>
       <h1>In-Store Catalog</h1>
 
+      {/* Simple search UX; no debounce needed for 15 rows */}
       <div style={{ marginBottom: "1rem" }}>
         <input
           placeholder="Search by name or genre..."
@@ -36,6 +43,7 @@ export default function Products() {
         />
       </div>
 
+      {/* Responsive CSS grid for product cards */}
       <div
         style={{
           display: "grid",
@@ -44,11 +52,11 @@ export default function Products() {
         }}
       >
         {filtered.map((p) => {
-          const sale = Number(p.salePercent || 0); // 0, 0.2, 0.3, 0.5
+          // salePercent means the backend price is *already* discounted.
+          const sale = Number(p.salePercent || 0);    // 0, 0.2, 0.3, 0.5
           const hasSale = sale > 0 && sale < 1;
-          // price coming from server is the CURRENT price (already discounted)
-          const current = Number(p.price || 0);
-          const base = hasSale ? current / (1 - sale) : current;
+          const current = Number(p.price || 0);       // "now" price
+          const base = hasSale ? current / (1 - sale) : current; // reconstruct MSRP
 
           return (
             <article
@@ -61,6 +69,7 @@ export default function Products() {
                 color: "#000",
               }}
             >
+              {/* Image frame with error fallback */}
               <div
                 style={{
                   width: "100%",
@@ -94,6 +103,7 @@ export default function Products() {
 
               <h3 style={{ margin: "0 0 0.35rem", color: "#000" }}>{p.name}</h3>
 
+              {/* Price display: if on sale, show strikethrough base + bold red current */}
               {hasSale ? (
                 <p style={{ margin: "0 0 0.5rem", fontWeight: 700, color: "#000" }}>
                   <span style={{ textDecoration: "line-through", color: "#888" }}>

@@ -1,13 +1,16 @@
-/* ============
-   GLOBAL THEME
-   ============= */
+/* index.css
+   My theme + component styles. Goal: readable, punchy, and easy to scan in code review.
+   I stick to CSS variables and a few utility classes; the rest is semantic selectors.
+*/
+
+/* ============ GLOBAL THEME ============= */
 :root{
-  --bg-1:#ff512f;    /* red-orange */
+  --bg-1:#ff512f;    /* red-orange gradient start */
   --bg-2:#f09819;    /* orange/gold */
   --bg-3:#dd2476;    /* magenta/pink */
-  --ink:#ffffff;
-  --ink-dim:#dfe6f3;
-  --accent:#00bfff;  /* pop blue for links */
+  --ink:#ffffff;     /* default text color on dark bg */
+  --ink-dim:#dfe6f3; /* muted text */
+  --accent:#00bfff;  /* link blue */
   --panel:rgba(0,0,0,0.38);
   --panel-border:rgba(255,255,255,0.15);
 }
@@ -24,11 +27,11 @@ body{
   color: var(--ink);
   background: linear-gradient(270deg, var(--bg-1), var(--bg-2), var(--bg-3));
   background-size: 600% 600%;
-  animation: bgGlow 18s ease infinite;
+  animation: bgGlow 18s ease infinite; /* soft breathing animation */
   overflow-x:hidden;
 }
 
-/* Halftone comic-dot overlay */
+/* Halftone comic-dot overlay for the "shop poster" vibe */
 body::before{
   content:"";
   position:fixed;
@@ -45,11 +48,9 @@ body::before{
   100%{ background-position: 0% 50%; }
 }
 
-/* =========================
-   TYPOGRAPHY
-   ========================= */
+/* ========================= TYPOGRAPHY ========================= */
 h1,h2,h3{
-  font-family:"Bangers", cursive;
+  font-family:"Bangers", cursive; /* comic logo energy */
   letter-spacing:1px;
   text-transform:uppercase;
   color:#fff;
@@ -59,7 +60,7 @@ h1,h2,h3{
 
 p, label { color: var(--ink); }
 
-/* Links */
+/* Links pop with accent color; white on hover for extra contrast */
 a{
   color: var(--accent);
   text-decoration:none;
@@ -70,9 +71,7 @@ a:hover{
   text-shadow:0 0 10px var(--accent);
 }
 
-/* =========================
-   LAYOUT
-   ========================= */
+/* ========================= LAYOUT ========================= */
 .page-container{
   position:relative;
   z-index:1;
@@ -90,9 +89,7 @@ section{
   box-shadow: 0 8px 24px rgba(0,0,0,0.35);
 }
 
-/* =========================
-   NAVIGATION
-   ========================= */
+/* ========================= NAVIGATION ========================= */
 .site-nav{
   position:sticky;
   top:0;
@@ -124,16 +121,14 @@ section{
   flex-wrap:wrap;
 }
 
-/* Footer */
+/* Footer stays low-key */
 .site-footer{
   text-align:center;
   opacity:.85;
   padding: 1.25rem 1rem 2rem;
 }
 
-/* =========================
-   CARDS, IMAGES, BUTTONS
-   ========================= */
+/* ========================= CARDS, IMAGES, BUTTONS ========================= */
 article{
   background: rgba(0,0,0,0.45);
   border: 2px solid var(--panel-border);
@@ -147,7 +142,7 @@ article:hover{
   box-shadow: 0 14px 28px rgba(0,0,0,0.55);
 }
 
-/* Reusable image frames if you add className="thumb" or "hero" */
+/* Reusable image frames (cards + detail) */
 .thumb{
   width:100%;
   height:180px;
@@ -185,7 +180,7 @@ article:hover{
   display:block;
 }
 
-/* Buttons */
+/* Buttons — bright gradient that fits the theme */
 button{
   background: linear-gradient(90deg, var(--bg-1), var(--bg-3));
   border:none;
@@ -234,12 +229,13 @@ th, td{
   text-align:left;
 }
 
-/* Small utilities */
+/* Small utilities for spacing */
 .m-0{ margin:0; }
 .mt-1{ margin-top:.5rem; }
 .mt-2{ margin-top:1rem; }
 .mt-3{ margin-top:1.5rem; }
 
+/* Comic lighting overlay behind each section panel */
 section::before {
   content: "";
   position: absolute;
@@ -252,6 +248,7 @@ section::before {
   z-index: -1;
   border-radius: inherit;
 }
+
 /* ====== HERO CAROUSEL ====== */
 .hero-panel{
   position: relative;
@@ -371,18 +368,19 @@ section::before {
   color: #fff;
   opacity: .85;
 }
-/* Ensure <select> dropdowns are readable across browsers */
+
+/* Ensure <select> dropdowns are readable in various browsers */
 select {
   color: #111 !important;
   background-color: #ffffff !important;
-  border: 1px solid #b88a5a;       /* optional: match your theme */
+  border: 1px solid #b88a5a;       /* optional: match theme */
   border-radius: 6px;
   padding: 0.45rem 0.6rem;
 }
 
 select option {
   color: #111 !important;
-  background-color: #ffffff !important; /* affects the dropdown panel rows */
+  background-color: #ffffff !important; /* dropdown rows */
 }
 
 /* Optional: disabled state */

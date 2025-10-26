@@ -1,3 +1,7 @@
+// AdminDashboard.jsx
+// Back-office list with inline "sale" toggles. I keep an in-memory map of each product's
+// original price so I can flip sales on/off without price drift from repeated discounts.
+
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
@@ -9,13 +13,15 @@ export default function AdminDashboard() {
   );
   const items = Array.isArray(data) ? data : [];
 
-  // Stable original prices per product id; never overwritten after seed
+  // Stable original prices per product id; never overwritten after seed.
+  // Why a ref? because I don't want rerenders every time this map changes.
   const originalRef = useRef({}); // { [id]: number }
 
-  // Track active sale % per product for controlled checkboxes
+  // Track active sale % per product for controlled checkboxes.
   const [saleState, setSaleState] = useState({}); // { [id]: 0 | 0.2 | 0.3 | 0.5 }
 
-  // Seed originalRef + saleState from server data on first sight of each id
+  // Seed originalRef + saleState from server data on first sight of each id.
+  // This lets me reconstruct base price when a sale is active (since server price is discounted).
   useEffect(() => {
     if (!Array.isArray(items)) return;
     const orig = originalRef.current;
@@ -42,6 +48,7 @@ export default function AdminDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
+  // Delete a product and optimistically remove from local state.
   async function handleDelete(id) {
     if (!confirm("Delete this game?")) return;
     try {
@@ -87,7 +94,7 @@ export default function AdminDashboard() {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      // Update list immediately
+      // Update list immediately (optimistic UI)
       setData((prev) =>
         Array.isArray(prev)
           ? prev.map((p) =>
@@ -115,10 +122,12 @@ export default function AdminDashboard() {
     <section>
       <h1>Admin Portal</h1>
 
+      {/* Top CTA to add records */}
       <div style={{ margin: "1rem 0" }}>
         <Link to="/admin/new">+ Add New Game</Link>
       </div>
 
+      {/* Scrollable table container so the page doesn't jump around */}
       <div style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
@@ -139,6 +148,7 @@ export default function AdminDashboard() {
                 <td style={td}>{p.quantity}</td>
                 <td style={td}>
                   <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+                    {/* Basic CRUD buttons */}
                     <button
                       onClick={() => navigate(`/admin/products/${p.id}/edit`)}
                       style={btnEdit}
@@ -152,7 +162,7 @@ export default function AdminDashboard() {
                       Delete
                     </button>
 
-                    {/* Sale toggles */}
+                    {/* Sale toggles — designed to be mutually exclusive per product */}
                     <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
                       {[0.2, 0.3, 0.5].map((d) => (
                         <label key={d} style={{ fontSize: "0.8rem", color: "#fff", display: "flex", alignItems: "center" }}>
