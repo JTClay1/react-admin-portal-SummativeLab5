@@ -16,7 +16,8 @@
       "price": 59.99,
       "quantity": 17,
       "imageUrl": "/images/fh5.jpg",
-      "description": "Explore Mexico in stunning detail and race across diverse environments with hundreds of cars."
+      "description": "Explore Mexico in stunning detail and race across diverse environments with hundreds of cars.",
+      "salePercent": 0
     },
     {
       "id": "2",

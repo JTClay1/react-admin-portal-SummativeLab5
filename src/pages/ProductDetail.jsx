@@ -1,23 +1,20 @@
 // ProductDetail.jsx
-// Dedicated detail page for a single product.
-// I re-compute the base MSRP if a salePercent exists so users see "was $X / now $Y".
-// "Back" logic: if I arrived from the Admin portal, I hard-navigate back to /admin;
-// otherwise I use normal history(-1). This avoids the blank page edge-case.
+// Displays a single game's full details. Updated for the dark theme so the image
+// sits on a black-to-dark-gray gradient background instead of a bright white block.
 
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const placeholder = "https://via.placeholder.com/800x450.png?text=No+Image";
 
 export default function ProductDetail() {
-  const { id } = useParams();          // dynamic route param
-  const navigate = useNavigate();      // router imperative nav
-  const location = useLocation();      // to see if we came from Admin
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
 
-  // Fetch on mount + whenever id changes
+  // Fetch the specific product
   useEffect(() => {
     (async () => {
       try {
@@ -33,28 +30,23 @@ export default function ProductDetail() {
     })();
   }, [id]);
 
-  // Smart back: prefer returning to /admin if we came from there
-  const handleBack = () => {
-    if (location.state?.from === "admin") navigate("/admin", { replace: true });
-    else navigate(-1);
-  };
-
   if (loading) return <p>Loading…</p>;
   if (err) return <p role="alert">Error: {err}</p>;
   if (!game) return <p>Not found.</p>;
 
-  // Pricing math mirrors the list view for consistency.
-  const sale = Number(game.salePercent || 0); // 0–1
+  const sale = Number(game.salePercent || 0);
   const hasSale = sale > 0 && sale < 1;
-  const current = Number(game.price || 0);    // discounted if sale is active
+  const current = Number(game.price || 0);
   const base = hasSale ? current / (1 - sale) : current;
 
   return (
-    <section style={{ display: "grid", gap: "0.75rem", maxWidth: 920 }}>
-      <button onClick={handleBack}>← Back</button>
+    <section className="product-detail">
+      <button onClick={() => navigate(-1)} className="btn-ghost">
+        ← Back
+      </button>
 
-      {/* Big banner shot */}
-      <div className="hero">
+      {/* HERO IMAGE AREA */}
+      <div className="hero dark-hero">
         <img
           src={game.imageUrl || placeholder}
           alt={game.name}
@@ -65,59 +57,32 @@ export default function ProductDetail() {
         />
       </div>
 
-      <h1 style={{ margin: 0 }}>{game.name}</h1>
+      {/* INFO AREA */}
+      <h1>{game.name}</h1>
 
-      {/* Compact price pill with sale styles */}
       {hasSale ? (
-        <p
-          style={{
-            margin: 0,
-            fontSize: "1.25rem",
-            fontWeight: 800,
-            color: "#000",
-            background: "#fff",
-            padding: "0.5rem 0.75rem",
-            borderRadius: 10,
-            width: "fit-content",
-          }}
-        >
-          <span style={{ textDecoration: "line-through", color: "#888" }}>
-            ${base.toFixed(2)}
-          </span>{" "}
-          <span style={{ color: "#ff1744", marginLeft: 8 }}>
+        <p className="price price--sale">
+          <span className="price__base">${base.toFixed(2)}</span>{" "}
+          <span className="price__sale">
             ${current.toFixed(2)} SALE PRICE
           </span>
         </p>
       ) : (
-        <p
-          style={{
-            margin: 0,
-            fontSize: "1.25rem",
-            fontWeight: 800,
-            color: "#000",
-            background: "#fff",
-            padding: "0.5rem 0.75rem",
-            borderRadius: 10,
-            width: "fit-content",
-          }}
-        >
-          ${current.toFixed(2)}
-        </p>
+        <p className="price">${current.toFixed(2)}</p>
       )}
 
-      {/* Basic metadata (kept minimal for the lab) */}
-      <p style={{ margin: 0 }}>
+      <p>
         <strong>Platform:</strong> {game.platform}
       </p>
-      <p style={{ margin: 0 }}>
+      <p>
         <strong>Genre:</strong> {game.genre}
       </p>
-      <p style={{ margin: 0 }}>
+      <p>
         <strong>Description:</strong> {game.description || "—"}
       </p>
-      <p style={{ margin: 0 }}>
+      <p>
         <strong>Availability:</strong>{" "}
-        <span style={{ color: game.quantity > 0 ? "green" : "crimson" }}>
+        <span style={{ color: game.quantity > 0 ? "limegreen" : "crimson" }}>
           {game.quantity > 0 ? "In Stock" : "Out of Stock"}
         </span>
       </p>
