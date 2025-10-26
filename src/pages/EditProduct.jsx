@@ -1,13 +1,15 @@
 // EditProduct.jsx
 // Admin edit form. Loads the record on mount, hydrates the form, then PATCHes only the fields we track.
-// I do minimal validation to mirror the "create" form behavior.
+// Minimal validation to mirror the "create" form behavior.
+// "Back" logic uses the same state flag pattern as ProductDetail so returning to Admin is reliable.
 
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 export default function EditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
@@ -88,7 +90,7 @@ export default function EditProduct() {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      navigate("/admin");
+      navigate("/admin"); // UX: bounce back to the list after save
     } catch (e) {
       setErr(e.message);
     } finally {
@@ -96,12 +98,18 @@ export default function EditProduct() {
     }
   }
 
+  // Smart back: prefer returning to /admin if we came from there
+  const handleBack = () => {
+    if (location.state?.from === "admin") navigate("/admin", { replace: true });
+    else navigate(-1);
+  };
+
   if (loading) return <p>Loading…</p>;
   if (err) return <p role="alert" style={{ color: "crimson" }}>Error: {err}</p>;
 
   return (
     <section>
-      <button onClick={() => navigate(-1)}>← Back</button>
+      <button onClick={handleBack}>← Back</button>
       <h1>Edit Product</h1>
 
       <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.9rem", maxWidth: 560 }}>
@@ -114,7 +122,11 @@ export default function EditProduct() {
           Genre*
           <select name="genre" value={form.genre} onChange={onChange}>
             <option value="">Select a category</option>
-            {genreOptions.map((g) => <option key={g} value={g}>{g}</option>)}
+            {genreOptions.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
           </select>
         </label>
 
@@ -125,29 +137,59 @@ export default function EditProduct() {
 
         <label>
           Price (USD)*
-          <input name="price" type="number" step="0.01" value={form.price} onChange={onChange} />
+          <input
+            name="price"
+            type="number"
+            step="0.01"
+            value={form.price}
+            onChange={onChange}
+          />
         </label>
 
         <label>
           Quantity
-          <input name="quantity" type="number" min="0" value={form.quantity} onChange={onChange} />
+          <input
+            name="quantity"
+            type="number"
+            min="0"
+            value={form.quantity}
+            onChange={onChange}
+          />
         </label>
 
         <label>
           Photo URL
-          <input name="imageUrl" value={form.imageUrl} onChange={onChange} placeholder="https://…" />
+          <input
+            name="imageUrl"
+            value={form.imageUrl}
+            onChange={onChange}
+            placeholder="https://…"
+          />
         </label>
 
         <label>
           Description
-          <textarea name="description" rows={4} value={form.description} onChange={onChange} />
+          <textarea
+            name="description"
+            rows={4}
+            value={form.description}
+            onChange={onChange}
+          />
         </label>
 
-        {err && <p role="alert" style={{ color: "crimson" }}>Error: {err}</p>}
+        {err && (
+          <p role="alert" style={{ color: "crimson" }}>
+            Error: {err}
+          </p>
+        )}
 
         <div style={{ display: "flex", gap: "0.75rem" }}>
-          <button type="submit" disabled={saving}>{saving ? "Saving…" : "Save Changes"}</button>
-          <button type="button" onClick={() => navigate("/admin")}>Cancel</button>
+          <button type="submit" disabled={saving}>
+            {saving ? "Saving…" : "Save Changes"}
+          </button>
+          <button type="button" onClick={() => navigate("/admin")}>
+            Cancel
+          </button>
         </div>
       </form>
     </section>

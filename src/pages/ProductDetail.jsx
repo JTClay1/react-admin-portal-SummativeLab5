@@ -1,15 +1,18 @@
 // ProductDetail.jsx
 // Dedicated detail page for a single product.
 // I re-compute the base MSRP if a salePercent exists so users see "was $X / now $Y".
+// "Back" logic: if I arrived from the Admin portal, I hard-navigate back to /admin;
+// otherwise I use normal history(-1). This avoids the blank page edge-case.
 
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const placeholder = "https://via.placeholder.com/800x450.png?text=No+Image";
 
 export default function ProductDetail() {
   const { id } = useParams();          // dynamic route param
-  const navigate = useNavigate();      // quick back button
+  const navigate = useNavigate();      // router imperative nav
+  const location = useLocation();      // to see if we came from Admin
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
@@ -30,6 +33,12 @@ export default function ProductDetail() {
     })();
   }, [id]);
 
+  // Smart back: prefer returning to /admin if we came from there
+  const handleBack = () => {
+    if (location.state?.from === "admin") navigate("/admin", { replace: true });
+    else navigate(-1);
+  };
+
   if (loading) return <p>Loading…</p>;
   if (err) return <p role="alert">Error: {err}</p>;
   if (!game) return <p>Not found.</p>;
@@ -42,7 +51,7 @@ export default function ProductDetail() {
 
   return (
     <section style={{ display: "grid", gap: "0.75rem", maxWidth: 920 }}>
-      <button onClick={() => navigate(-1)}>← Back</button>
+      <button onClick={handleBack}>← Back</button>
 
       {/* Big banner shot */}
       <div className="hero">

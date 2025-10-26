@@ -1,6 +1,8 @@
 // AdminDashboard.jsx
 // Back-office list with inline "sale" toggles. I keep an in-memory map of each product's
 // original price so I can flip sales on/off without price drift from repeated discounts.
+// Also: when I leave this page (Edit/View/New), I pass state { from: 'admin' } so the
+// destination page knows how to send me back here reliably.
 
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -122,9 +124,11 @@ export default function AdminDashboard() {
     <section>
       <h1>Admin Portal</h1>
 
-      {/* Top CTA to add records */}
+      {/* Top CTA to add records — I pass { from: 'admin' } so the form page knows how to "Back" to here */}
       <div style={{ margin: "1rem 0" }}>
-        <Link to="/admin/new">+ Add New Game</Link>
+        <Link to="/admin/new" state={{ from: "admin" }}>
+          + Add New Game
+        </Link>
       </div>
 
       {/* Scrollable table container so the page doesn't jump around */}
@@ -148,14 +152,21 @@ export default function AdminDashboard() {
                 <td style={td}>{p.quantity}</td>
                 <td style={td}>
                   <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-                    {/* Basic CRUD buttons */}
+                    {/* Basic CRUD buttons — I pass state so the next page can return to /admin even if history is funky */}
                     <button
-                      onClick={() => navigate(`/admin/products/${p.id}/edit`)}
+                      onClick={() =>
+                        navigate(`/admin/products/${p.id}/edit`, { state: { from: "admin" } })
+                      }
                       style={btnEdit}
                     >
                       Edit
                     </button>
-                    <button onClick={() => navigate(`/products/${p.id}`)} style={btnView}>
+                    <button
+                      onClick={() =>
+                        navigate(`/products/${p.id}`, { state: { from: "admin" } })
+                      }
+                      style={btnView}
+                    >
                       View
                     </button>
                     <button onClick={() => handleDelete(p.id)} style={btnDelete}>
@@ -165,7 +176,15 @@ export default function AdminDashboard() {
                     {/* Sale toggles — designed to be mutually exclusive per product */}
                     <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
                       {[0.2, 0.3, 0.5].map((d) => (
-                        <label key={d} style={{ fontSize: "0.8rem", color: "#fff", display: "flex", alignItems: "center" }}>
+                        <label
+                          key={d}
+                          style={{
+                            fontSize: "0.8rem",
+                            color: "#fff",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
                           <input
                             type="checkbox"
                             checked={saleState[p.id] === d}

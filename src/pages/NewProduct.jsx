@@ -1,12 +1,15 @@
 // NewProduct.jsx
 // Admin form to create a product. I keep validation simple: name/genre/price required.
 // Quantity defaults to a random stock number if omitted to make the demo feel alive.
+// "Back" logic uses the same pattern as Edit/Detail: if I got here from Admin, go back there.
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function NewProduct() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [form, setForm] = useState({
     name: "",
     genre: "",
@@ -62,7 +65,7 @@ export default function NewProduct() {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      // UX: bounce back to admin list
+      // UX: bounce back to admin list after a create
       navigate("/admin");
     } catch (err) {
       setError(err.message);
@@ -71,23 +74,43 @@ export default function NewProduct() {
     }
   }
 
+  // Smart back like other pages
+  const handleBack = () => {
+    if (location.state?.from === "admin") navigate("/admin", { replace: true });
+    else navigate(-1);
+  };
+
   return (
     <section>
+      <button onClick={handleBack}>← Back</button>
       <h1>Add New Game</h1>
-      {error && <p role="alert" style={{ color: "crimson" }}>Error: {error}</p>}
+      {error && (
+        <p role="alert" style={{ color: "crimson" }}>
+          Error: {error}
+        </p>
+      )}
 
       {/* I keep layout as a simple CSS grid — readable in code reviews */}
       <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.9rem", maxWidth: 560 }}>
         <label>
           Game Name*
-          <input name="name" value={form.name} onChange={onChange} placeholder="e.g., Forza Horizon 5" />
+          <input
+            name="name"
+            value={form.name}
+            onChange={onChange}
+            placeholder="e.g., Forza Horizon 5"
+          />
         </label>
 
         <label>
           Genre*
           <select name="genre" value={form.genre} onChange={onChange}>
             <option value="">Select a category</option>
-            {genreOptions.map((g) => <option key={g} value={g}>{g}</option>)}
+            {genreOptions.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
           </select>
         </label>
 
@@ -98,27 +121,56 @@ export default function NewProduct() {
 
         <label>
           Price (USD)*
-          <input name="price" type="number" step="0.01" value={form.price} onChange={onChange} placeholder="59.99" />
+          <input
+            name="price"
+            type="number"
+            step="0.01"
+            value={form.price}
+            onChange={onChange}
+            placeholder="59.99"
+          />
         </label>
 
         <label>
           Quantity
-          <input name="quantity" type="number" min="0" value={form.quantity} onChange={onChange} placeholder="Leave blank for random stock" />
+          <input
+            name="quantity"
+            type="number"
+            min="0"
+            value={form.quantity}
+            onChange={onChange}
+            placeholder="Leave blank for random stock"
+          />
         </label>
 
         <label>
           Photo URL
-          <input name="imageUrl" value={form.imageUrl} onChange={onChange} placeholder="https://…" />
+          <input
+            name="imageUrl"
+            value={form.imageUrl}
+            onChange={onChange}
+            placeholder="https://…"
+          />
         </label>
 
         <label>
           Description
-          <textarea name="description" value={form.description} onChange={onChange} placeholder="Short blurb…" rows={4} />
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={onChange}
+            placeholder="Short blurb…"
+            rows={4}
+          />
         </label>
 
         <div style={{ display: "flex", gap: "0.75rem" }}>
-          <button type="submit" disabled={submitting}>{submitting ? "Saving…" : "Save Game"}</button>
-          <button type="button" onClick={() => navigate("/admin")}>Cancel</button>
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Saving…" : "Save Game"}
+          </button>
+          <button type="button" onClick={() => navigate("/admin")}>
+            Cancel
+          </button>
         </div>
       </form>
     </section>
