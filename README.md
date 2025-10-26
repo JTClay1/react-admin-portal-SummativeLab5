@@ -14,3 +14,9 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Run / Dev / Backend
+- Install deps: `npm install`
+- Start backend (JSON Server): `npx json-server --watch db.json --port 4000`
+- Start Vite dev server: `npm run dev` (open the URL it prints)
+- Lint/tests will be added in a later commit.
